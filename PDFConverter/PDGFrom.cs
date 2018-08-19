@@ -66,6 +66,11 @@ namespace PDFConverter
 
         private void btn_rename_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtPath.Text))
+            {
+                MessageBox.Show("输出路径为空");
+                return;
+            }
             _outputPath = txtPath.Text;
             List<string> errlist = new List<string>();
             
@@ -105,7 +110,8 @@ namespace PDFConverter
 
             if (dt.Rows.Count > 0)
             {
-                ExcelHandler.Write(_outputPath+"\\重命名_"+DateTime.Now.ToString()+".xls", new List<DataTable>() { dt });
+                string path = _outputPath + "\\重命名_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
+                ExcelHandler.Write(path, new List<DataTable>() { dt });
             }
 
             if (errlist.Count > 0)

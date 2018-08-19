@@ -27,6 +27,11 @@ namespace Helper
 
         public static void Convert(List<string> files, string PDFfile)
         {
+            if (files.Count == 0)
+            {
+                return;
+            }
+
             files.Sort(SortClass.StrCmpLogicalW);
             using (Document document = new Document())
             {

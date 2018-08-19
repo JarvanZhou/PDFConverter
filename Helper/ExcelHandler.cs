@@ -106,7 +106,7 @@ namespace Helper
                 using (FileStream fs = new FileStream(path, FileMode.Create)) wb.Write(fs);
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
                 return false;
             }
