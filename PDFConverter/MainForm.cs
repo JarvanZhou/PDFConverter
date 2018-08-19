@@ -137,11 +137,17 @@ namespace PDFConverter
             Start(_dirpath);
         }
 
+        private void dgvView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
+        }
+
         private void dgvView_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex == -1) return;
             if (e.ColumnIndex == 0)
             {
+                if (dgvView.Rows[e.RowIndex].Cells[2].Value.ToString() == "") return;
                 List<string> files = new List<string>();
                 foreach (DataGridViewRow row in dgvView.Rows)
                 {

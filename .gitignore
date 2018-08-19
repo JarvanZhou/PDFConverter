@@ -3,3 +3,11 @@
 ################################################################################
 
 /.vs/PDFConverter/v15/Server/sqlite3
+/DPGConverter/bin
+/DPGConverter/obj
+/Helper/bin
+/Helper/obj
+/JPGTOPDF/bin
+/JPGTOPDF/obj
+/PDFConverter/bin
+/PDFConverter/obj

@@ -91,6 +91,7 @@
             this.dgvView.RowTemplate.Height = 23;
             this.dgvView.Size = new System.Drawing.Size(709, 375);
             this.dgvView.TabIndex = 2;
+            this.dgvView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvView_CellMouseDown);
             this.dgvView.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvView_CellMouseUp);
             this.dgvView.DragDrop += new System.Windows.Forms.DragEventHandler(this.dgvView_DragDrop);
             this.dgvView.DragOver += new System.Windows.Forms.DragEventHandler(this.dgvView_DragOver);
