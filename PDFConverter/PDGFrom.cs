@@ -19,7 +19,6 @@ namespace PDFConverter
         public PDGFrom()
         {
             InitializeComponent();
-            _dirs = new List<string>();
         }
 
         public event EventHandler<PDFEventArgs> PDFChanged
@@ -72,19 +71,45 @@ namespace PDFConverter
                 return;
             }
             _outputPath = txtPath.Text;
-            List<string> errlist = new List<string>();
-            
-            DataTable dt = new DataTable();
-            dt.Columns.Add("来源");
-            dt.Columns.Add("名称1");
-            dt.Columns.Add("名称2");
+
+            _dirs = new List<string>();
 
             foreach (DataGridViewRow row in dgvView.Rows)
             {
                 DataGridViewCheckBoxCell cell = row.Cells[0] as DataGridViewCheckBoxCell;
                 if (Convert.ToBoolean(cell.EditingCellFormattedValue) == true)
                 {
-                    string[] file = Directory.GetFiles(row.Cells["FileColumn"].Value.ToString());
+                    _dirs.Add(row.Cells["FileColumn"].Value.ToString());
+                }
+            }
+
+            if (_dirs.Count > 0)
+            {
+                progressBar1.Value = 0;
+                progressBar1.Maximum = _dirs.Count;
+                SetBtnEnable(false);
+
+                Thread t = new Thread(runRename);
+                t.IsBackground = true;
+                t.Start();
+            }
+
+        }
+
+        private void runRename()
+        {
+            _outputPath = txtPath.Text;
+            List<string> errlist = new List<string>();
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("来源");
+            dt.Columns.Add("名称1");
+            dt.Columns.Add("名称2");
+            foreach (var dir in _dirs)
+            {
+                try
+                {
+                    string[] file = Directory.GetFiles(dir);
                     Dictionary<string, string> dic = ReName.Rename(file.ToList());
 
                     foreach (var kvp in dic)
@@ -106,6 +131,17 @@ namespace PDFConverter
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    errlist.Add(ex.Message);
+                }
+                finally
+                {
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        progressBar1.Value++;
+                    }));
+                }
             }
 
             if (dt.Rows.Count > 0)
@@ -114,14 +150,19 @@ namespace PDFConverter
                 ExcelHandler.Write(path, new List<DataTable>() { dt });
             }
 
-            if (errlist.Count > 0)
+            this.Invoke(new MethodInvoker(delegate
             {
-                MessageBox.Show(string.Join("\r\n", errlist));
-            }
-            else
-            {
-                MessageBox.Show("重命名完成");
-            }
+
+                if (errlist.Count > 0)
+                {
+                    MessageBox.Show(string.Join("\r\n", errlist));
+                }
+                else
+                {
+                    MessageBox.Show("重命名完成");
+                }
+                SetBtnEnable(true);
+            }));
         }
 
         private void btnCombine_Click(object sender, EventArgs e)
@@ -131,7 +172,7 @@ namespace PDFConverter
                 MessageBox.Show("输出路径为空");
                 return;
             }
-
+            _dirs = new List<string>();
             foreach (DataGridViewRow row in dgvView.Rows)
             {
                 DataGridViewCheckBoxCell cell = row.Cells[0] as DataGridViewCheckBoxCell;
@@ -148,6 +189,8 @@ namespace PDFConverter
             {
                 progressBar1.Value = 0;
                 progressBar1.Maximum = _dirs.Count;
+                SetBtnEnable(false);
+
                 Thread t = new Thread(runThread);
                 t.IsBackground = true;
                 t.Start();
@@ -157,11 +200,11 @@ namespace PDFConverter
         private void runThread()
         {
             List<string> errlist = new List<string>();
-            foreach(var dir in _dirs)
+            foreach (var dir in _dirs)
             {
                 try
                 {
-                    PDFhandler.ConvertPDF(dir,_outputPath);
+                    PDFhandler.ConvertPDF(dir, _outputPath);
                 }
                 catch (Exception ex)
                 {
@@ -187,9 +230,17 @@ namespace PDFConverter
                 {
                     MessageBox.Show("转换完成");
                 }
+                SetBtnEnable(true);
             }));
         }
 
+        private void SetBtnEnable(bool enable)
+        {
+            btnCombine.Enabled = enable;
+            btnDir.Enabled = enable;
+            btnExe.Enabled = enable;
+            btn_rename.Enabled = enable;
+        }
 
         private void btnExe_Click(object sender, EventArgs e)
         {
