@@ -155,7 +155,7 @@ namespace PDFConverter
             {
                 try
                 {
-                    ConvertPDF(dir,_outputPath);
+                    PDFhandler.ConvertPDF(dir,_outputPath);
                 }
                 catch (Exception ex)
                 {
@@ -184,19 +184,6 @@ namespace PDFConverter
             }));
         }
 
-        public void ConvertPDF(string dir,string outdir)
-        {
-
-            List<string> files = new List<string>();
-            files.AddRange(Directory.GetFiles(dir, "*.jpg").ToList());
-            files.AddRange(Directory.GetFiles(dir, "*.png").ToList());
-            files.AddRange(Directory.GetFiles(dir, "*.tif").ToList());
-            files.AddRange(Directory.GetFiles(dir, "*.tiff").ToList());
-
-            string pdfpath = outdir + "\\" + Path.GetFileName(dir.EndsWith("\\") ? dir.Substring(0, dir.Length - 2) : dir) + ".pdf";
-            PDFhandler.Convert(files.ToList(), pdfpath);
-
-        }
 
         private void btnExe_Click(object sender, EventArgs e)
         {

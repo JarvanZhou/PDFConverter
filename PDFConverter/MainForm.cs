@@ -39,13 +39,13 @@ namespace PDFConverter
             { MessageBox.Show("不可同时选中图片和PDG两种模式"); return; }
             else if (pic)
             {
-                _dirList = new List<string>();
-                foreach (DataGridViewRow row in dgvView.Rows)
+                _dirList = new Dictionary<int, string>();
+                for (int i = 0; i < dgvView.Rows.Count; i++)
                 {
-                    if (Convert.ToBoolean(row.Cells[0].EditedFormattedValue))
+                    if (Convert.ToBoolean(dgvView.Rows[i].Cells[0].EditedFormattedValue))
                     {
 
-                        _dirList.Add(row.Cells["FileColumn"].Value.ToString());
+                        _dirList.Add(i, dgvView.Rows[i].Cells["FileColumn"].Value.ToString());
                     }
                 }
 
@@ -62,6 +62,7 @@ namespace PDFConverter
             else if (pdg)
             {
                 List<string> files = new List<string>();
+
                 foreach (DataGridViewRow row in dgvView.Rows)
                 {
                     if (Convert.ToBoolean(row.Cells[0].EditedFormattedValue))
@@ -79,15 +80,15 @@ namespace PDFConverter
         private void run()
         {
 
-            PDGFrom pDGFrom = new PDGFrom();
+            //PDGFrom pDGFrom = new PDGFrom();
             List<string> errList = new List<string>();
 
-            foreach (var path in _dirList)
+            foreach (var kvp in _dirList)
             {
 
                 try
                 {
-                    pDGFrom.ConvertPDF(path, _dirpath);
+                    PDFhandler.ConvertPDF(kvp.Value, _dirpath);
                 }
                 catch (Exception ex)
                 {
@@ -98,6 +99,7 @@ namespace PDFConverter
                     this.Invoke(new MethodInvoker(delegate
                     {
                         progressBar1.Value++;
+                        dgvView.Rows[kvp.Key].Cells[4].Value = "合成";
                     }));
                 }
             }
@@ -182,7 +184,7 @@ namespace PDFConverter
 
 
         private string _dirpath;
-        private List<string> _dirList;
+        private Dictionary<int,string> _dirList;
 
     }
 }
