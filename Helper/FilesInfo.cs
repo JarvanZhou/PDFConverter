@@ -7,9 +7,9 @@ using System.IO;
 
 namespace Helper
 {
-    public static class JPGInfo
+    public static class FilesInfo
     {
-        public static string GetJPGInfo(string[] files)
+        public static string GetFilesInfo(string[] files)
         {
             int pages = 0;
             long size = 0;
@@ -17,7 +17,7 @@ namespace Helper
             foreach (var file in files)
             {
                 DirectoryInfo dic = new DirectoryInfo(file);
-                FileInfo[] filedata = dic.GetFiles("*.jpg");
+                FileInfo[] filedata = dic.GetFiles("*.*");
                 pages += filedata.Length;
                 foreach (var d in filedata)
                 {
