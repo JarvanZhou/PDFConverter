@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,6 +19,7 @@ namespace PDFConverter
         public PDGFrom()
         {
             InitializeComponent();
+            _dirs = new List<string>();
         }
 
         public event EventHandler<PDFEventArgs> PDFChanged
@@ -62,17 +64,138 @@ namespace PDFConverter
             }
         }
 
-        private void btnCombine_Click(object sender, EventArgs e)
+        private void btn_rename_Click(object sender, EventArgs e)
         {
+            _outputPath = txtPath.Text;
+            List<string> errlist = new List<string>();
+            
+            DataTable dt = new DataTable();
+            dt.Columns.Add("来源");
+            dt.Columns.Add("名称1");
+            dt.Columns.Add("名称2");
+
             foreach (DataGridViewRow row in dgvView.Rows)
             {
                 DataGridViewCheckBoxCell cell = row.Cells[0] as DataGridViewCheckBoxCell;
                 if (Convert.ToBoolean(cell.EditingCellFormattedValue) == true)
                 {
-                    //此处添加PDF处理
-                    _pdfChanged?.Invoke(dgvView, new PDFEventArgs(row.Cells["FileColumn"].Value.ToString()));
+                    string[] file = Directory.GetFiles(row.Cells["FileColumn"].Value.ToString());
+                    Dictionary<string, string> dic = ReName.Rename(file.ToList());
+
+                    foreach (var kvp in dic)
+                    {
+
+                        try
+                        {
+                            File.Move(kvp.Key, Path.GetDirectoryName(kvp.Key) + "\\" + kvp.Value);
+
+                            DataRow dataRow = dt.NewRow();
+                            dataRow["来源"] = Path.GetDirectoryName(kvp.Key);
+                            dataRow["名称1"] = Path.GetFileName(kvp.Key);
+                            dataRow["名称2"] = kvp.Value;
+                            dt.Rows.Add(dataRow);
+                        }
+                        catch
+                        {
+                            errlist.Add(kvp.Key + "重命名出错");
+                        }
+                    }
                 }
             }
+
+            if (dt.Rows.Count > 0)
+            {
+                ExcelHandler.Write(_outputPath+"\\重命名_"+DateTime.Now.ToString()+".xls", new List<DataTable>() { dt });
+            }
+
+            if (errlist.Count > 0)
+            {
+                MessageBox.Show(string.Join("\r\n", errlist));
+            }
+            else
+            {
+                MessageBox.Show("重命名完成");
+            }
+        }
+
+        private void btnCombine_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtPath.Text))
+            {
+                MessageBox.Show("输出路径为空");
+                return;
+            }
+
+            foreach (DataGridViewRow row in dgvView.Rows)
+            {
+                DataGridViewCheckBoxCell cell = row.Cells[0] as DataGridViewCheckBoxCell;
+                if (Convert.ToBoolean(cell.EditingCellFormattedValue) == true)
+                {
+                    _dirs.Add(row.Cells["FileColumn"].Value.ToString());
+
+                }
+            }
+
+
+            _outputPath = txtPath.Text;
+            if (_dirs.Count > 0)
+            {
+                progressBar1.Value = 0;
+                progressBar1.Maximum = _dirs.Count;
+                Thread t = new Thread(runThread);
+                t.IsBackground = true;
+                t.Start();
+            }
+        }
+
+        private void runThread()
+        {
+            List<string> errlist = new List<string>();
+            foreach(var dir in _dirs)
+            {
+                try
+                {
+                    ConvertPDF(dir,_outputPath);
+                }
+                catch (Exception ex)
+                {
+                    errlist.Add(ex.Message);
+                }
+                finally
+                {
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        progressBar1.Value++;
+                    }));
+                    _pdfChanged?.Invoke(dgvView, new PDFEventArgs(dir));
+                }
+            }
+
+            this.Invoke(new MethodInvoker(delegate
+            {
+                if (errlist.Count > 0)
+                {
+                    MessageBox.Show(string.Join("\r\n", errlist));
+                }
+                else
+                {
+                    MessageBox.Show("转换完成");
+                }
+            }));
+        }
+
+        public void ConvertPDF(string dir,string outdir)
+        {
+
+            List<string> files = new List<string>();
+            files.AddRange(Directory.GetFiles(dir, "*.jpg").ToList());
+            files.AddRange(Directory.GetFiles(dir, "*.png").ToList());
+            files.AddRange(Directory.GetFiles(dir, "*.tif").ToList());
+            files.AddRange(Directory.GetFiles(dir, "*.tiff").ToList());
+
+            string pdfpath = outdir + "\\" + Path.GetFileName(dir.EndsWith("\\") ? dir.Substring(0, dir.Length - 2) : dir) + ".pdf";
+            PDFhandler.Convert(files.ToList(), pdfpath);
+
         }
 
         private void btnExe_Click(object sender, EventArgs e)
@@ -125,6 +248,8 @@ namespace PDFConverter
         private string[] _files;
         private string _title;
         private EventHandler<PDFEventArgs> _pdfChanged;
+        private List<string> _dirs;
+        private string _outputPath;
 
     }
 

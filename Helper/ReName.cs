@@ -11,7 +11,7 @@ namespace Helper
     public class ReName
     {
 
-        public Dictionary<string, string> Rename(List<string> files)
+        public static Dictionary<string, string> Rename(List<string> files)
         {
             int fileNewNum = 0;
 
@@ -21,7 +21,7 @@ namespace Helper
             var boks = (from string filename in files where Regex.IsMatch(Path.GetFileNameWithoutExtension(filename), @"\bbok\d+") select filename).ToList();
             var legs = (from string filename in files where Regex.IsMatch(Path.GetFileNameWithoutExtension(filename), @"\bleg\d+") select filename).ToList();
             var fows = (from string filename in files where Regex.IsMatch(Path.GetFileNameWithoutExtension(filename), @"\bfow\d+") select filename).ToList();
-            var directorys = (from string filename in files where Regex.IsMatch(Path.GetFileNameWithoutExtension(filename), @"\b!\d+") select filename).ToList();
+            var directorys = (from string filename in files where Regex.IsMatch(Path.GetFileNameWithoutExtension(filename), @"!\d+") select filename).ToList();
             var texts = (from string filename in files where Regex.IsMatch(Path.GetFileNameWithoutExtension(filename), @"^\d+") select filename).ToList();
 
             covs.Sort(SortClass.StrCmpLogicalW);
@@ -68,7 +68,7 @@ namespace Helper
             //封底
             if (covs.Count == 2)
             {
-                filedic.Add(covs[2], (++fileNewNum).ToString("00000000") + ".pdg");
+                filedic.Add(covs[1], (++fileNewNum).ToString("00000000") + ".pdg");
             }
 
             return filedic;

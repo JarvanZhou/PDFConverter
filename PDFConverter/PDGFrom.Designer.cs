@@ -43,6 +43,8 @@
             this.txtPath = new System.Windows.Forms.TextBox();
             this.btnDir = new System.Windows.Forms.Button();
             this.btnExe = new System.Windows.Forms.Button();
+            this.btn_rename = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.dgvView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -90,7 +92,7 @@
             this.dgvView.Name = "dgvView";
             this.dgvView.RowHeadersVisible = false;
             this.dgvView.RowTemplate.Height = 23;
-            this.dgvView.Size = new System.Drawing.Size(628, 396);
+            this.dgvView.Size = new System.Drawing.Size(628, 365);
             this.dgvView.TabIndex = 7;
             this.dgvView.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvView_CellMouseUp);
             // 
@@ -196,11 +198,33 @@
             this.btnExe.UseVisualStyleBackColor = false;
             this.btnExe.Click += new System.EventHandler(this.btnExe_Click);
             // 
+            // btn_rename
+            // 
+            this.btn_rename.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_rename.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.btn_rename.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_rename.Location = new System.Drawing.Point(368, 4);
+            this.btn_rename.Name = "btn_rename";
+            this.btn_rename.Size = new System.Drawing.Size(75, 39);
+            this.btn_rename.TabIndex = 13;
+            this.btn_rename.Text = "重命名";
+            this.btn_rename.UseVisualStyleBackColor = false;
+            this.btn_rename.Click += new System.EventHandler(this.btn_rename_Click);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(12, 452);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(628, 23);
+            this.progressBar1.TabIndex = 14;
+            // 
             // PDGFrom
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(652, 487);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.btn_rename);
             this.Controls.Add(this.btnExe);
             this.Controls.Add(this.btnDir);
             this.Controls.Add(this.txtPath);
@@ -238,5 +262,7 @@
         private System.Windows.Forms.TextBox txtPath;
         private System.Windows.Forms.Button btnDir;
         private System.Windows.Forms.Button btnExe;
+        private System.Windows.Forms.Button btn_rename;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }

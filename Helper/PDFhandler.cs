@@ -12,28 +12,21 @@ namespace Helper
     public class PDFhandler
     {
 
-        public static void Convert(List<string> files,string PDFfile)
+        public static void Convert(List<string> files, string PDFfile)
         {
-            try
+            files.Sort(SortClass.StrCmpLogicalW);
+            using (Document document = new Document())
             {
-                using (Document document = new Document())
+
+                PdfWriter.GetInstance(document, new FileStream(PDFfile, FileMode.Create));
+                document.Open();
+                foreach (var file in files)
                 {
-
-                    PdfWriter.GetInstance(document, new FileStream(PDFfile, FileMode.Create));
-                    document.Open();
-                    foreach (var file in files)
-                    {
-                        Image bitmap = Image.GetInstance(file);
-                        bitmap.ScalePercent((float)55000 / bitmap.Width);
-                        document.Add(bitmap);
-                    }
-                    document.Close();
+                    Image bitmap = Image.GetInstance(file);
+                    bitmap.ScalePercent((float)55000 / bitmap.Width);
+                    document.Add(bitmap);
                 }
-            }
-            catch (Exception ex)
-            {
-
-                throw;
+                document.Close();
             }
         }
     }

@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -38,14 +39,25 @@ namespace PDFConverter
             { MessageBox.Show("不可同时选中图片和PDG两种模式"); return; }
             else if (pic)
             {
+                _dirList = new List<string>();
                 foreach (DataGridViewRow row in dgvView.Rows)
                 {
                     if (Convert.ToBoolean(row.Cells[0].EditedFormattedValue))
                     {
-                        //此处添加合成功能
-                        row.Cells[4].Value = "合成";
+
+                        _dirList.Add(row.Cells["FileColumn"].Value.ToString());
                     }
                 }
+
+                if (_dirList.Count > 0)
+                {
+                    progressBar1.Maximum = _dirList.Count;
+                    progressBar1.Value = 0;
+                    Thread t = new Thread(run);
+                    t.IsBackground = true;
+                    t.Start();
+                }
+
             }
             else if (pdg)
             {
@@ -62,6 +74,45 @@ namespace PDFConverter
                 pdgform.PDFChanged += Pdgform_PDFChanged;
                 pdgform.ShowDialog();
             }
+        }
+
+        private void run()
+        {
+
+            PDGFrom pDGFrom = new PDGFrom();
+            List<string> errList = new List<string>();
+
+            foreach (var path in _dirList)
+            {
+
+                try
+                {
+                    pDGFrom.ConvertPDF(path, _dirpath);
+                }
+                catch (Exception ex)
+                {
+                    errList.Add(ex.Message);
+                }
+                finally
+                {
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        progressBar1.Value++;
+                    }));
+                }
+            }
+
+            this.Invoke(new MethodInvoker(delegate
+            {
+                if (errList.Count > 0)
+                {
+                    MessageBox.Show(string.Join("\r\n", errList));
+                }
+                else
+                {
+                    MessageBox.Show("转换完成");
+                }
+            }));
         }
 
         private void Pdgform_PDFChanged(object sender, PDFEventArgs e)
@@ -131,6 +182,7 @@ namespace PDFConverter
 
 
         private string _dirpath;
+        private List<string> _dirList;
 
     }
 }

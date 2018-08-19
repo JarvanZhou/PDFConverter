@@ -41,6 +41,7 @@
             this.FileColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblInfo = new System.Windows.Forms.Label();
             this.btnYes = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvView)).BeginInit();
             this.SuspendLayout();
@@ -88,7 +89,7 @@
             this.dgvView.Name = "dgvView";
             this.dgvView.RowHeadersVisible = false;
             this.dgvView.RowTemplate.Height = 23;
-            this.dgvView.Size = new System.Drawing.Size(709, 405);
+            this.dgvView.Size = new System.Drawing.Size(709, 375);
             this.dgvView.TabIndex = 2;
             this.dgvView.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvView_CellMouseUp);
             this.dgvView.DragDrop += new System.Windows.Forms.DragEventHandler(this.dgvView_DragDrop);
@@ -166,12 +167,20 @@
             this.btnYes.UseVisualStyleBackColor = false;
             this.btnYes.Click += new System.EventHandler(this.btnYes_Click);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(12, 458);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(708, 23);
+            this.progressBar1.TabIndex = 5;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(733, 494);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.btnYes);
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.dgvView);
@@ -204,6 +213,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CombineColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn OtherExeColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn FileColumn;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 

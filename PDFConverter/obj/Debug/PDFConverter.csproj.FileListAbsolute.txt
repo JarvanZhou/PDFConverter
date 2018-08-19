@@ -42,3 +42,5 @@ E:\myProgram\GitLocal\PDFConverter\PDFConverter\bin\Debug\itextsharp.dll
 E:\myProgram\GitLocal\PDFConverter\PDFConverter\bin\Debug\ICSharpCode.SharpZipLib.dll
 E:\myProgram\GitLocal\PDFConverter\PDFConverter\bin\Debug\NPOI.xml
 E:\myProgram\GitLocal\PDFConverter\PDFConverter\bin\Debug\itextsharp.xml
+E:\myProgram\GitLocal\PDFConverter\PDFConverter\bin\Debug\Pdg2Pic.exe
+E:\myProgram\GitLocal\PDFConverter\PDFConverter\obj\Debug\PDFConverter.PDGFrom.resources
