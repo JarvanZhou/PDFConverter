@@ -1,1 +1,15 @@
 c:\users\luffy_dai\documents\visual studio 2015\Projects\PDFConverter\PDFConverter\bin\Debug\PDFConverter.exe.config
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\bin\Debug\PDFConverter.exe.config
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\obj\Debug\PDFConverter.csprojResolveAssemblyReference.cache
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\obj\Debug\PDFConverter.MainForm.resources
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\obj\Debug\PDFConverter.Properties.Resources.resources
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\obj\Debug\PDFConverter.csproj.GenerateResource.Cache
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\bin\Debug\PDFConverter.exe
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\bin\Debug\PDFConverter.pdb
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\obj\Debug\PDFConverter.exe
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\obj\Debug\PDFConverter.pdb
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\bin\Debug\SharpCompress.dll
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\bin\Debug\Helper.dll
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\bin\Debug\Helper.pdb
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\bin\Debug\Pdg2Pic.exe
+C:\Users\luffy_dai\Source\Repos\PDFConverter\PDFConverter\obj\Debug\PDFConverter.PDGFrom.resources

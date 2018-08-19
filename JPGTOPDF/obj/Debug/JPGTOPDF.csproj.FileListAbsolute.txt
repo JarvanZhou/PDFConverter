@@ -1,0 +1,5 @@
+C:\Users\luffy_dai\Source\Repos\PDFConverter\JPGTOPDF\bin\Debug\JPGTOPDF.dll
+C:\Users\luffy_dai\Source\Repos\PDFConverter\JPGTOPDF\bin\Debug\JPGTOPDF.pdb
+C:\Users\luffy_dai\Source\Repos\PDFConverter\JPGTOPDF\obj\Debug\JPGTOPDF.csprojResolveAssemblyReference.cache
+C:\Users\luffy_dai\Source\Repos\PDFConverter\JPGTOPDF\obj\Debug\JPGTOPDF.dll
+C:\Users\luffy_dai\Source\Repos\PDFConverter\JPGTOPDF\obj\Debug\JPGTOPDF.pdb

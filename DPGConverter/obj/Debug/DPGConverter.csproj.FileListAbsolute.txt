@@ -1,0 +1,5 @@
+C:\Users\luffy_dai\Source\Repos\PDFConverter\DPGConverter\bin\Debug\DPGConverter.dll
+C:\Users\luffy_dai\Source\Repos\PDFConverter\DPGConverter\bin\Debug\DPGConverter.pdb
+C:\Users\luffy_dai\Source\Repos\PDFConverter\DPGConverter\obj\Debug\DPGConverter.csprojResolveAssemblyReference.cache
+C:\Users\luffy_dai\Source\Repos\PDFConverter\DPGConverter\obj\Debug\DPGConverter.dll
+C:\Users\luffy_dai\Source\Repos\PDFConverter\DPGConverter\obj\Debug\DPGConverter.pdb

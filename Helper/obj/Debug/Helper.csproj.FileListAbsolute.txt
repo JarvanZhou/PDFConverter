@@ -1,0 +1,5 @@
+C:\Users\luffy_dai\Source\Repos\PDFConverter\Helper\bin\Debug\Helper.dll
+C:\Users\luffy_dai\Source\Repos\PDFConverter\Helper\bin\Debug\Helper.pdb
+C:\Users\luffy_dai\Source\Repos\PDFConverter\Helper\obj\Debug\Helper.csprojResolveAssemblyReference.cache
+C:\Users\luffy_dai\Source\Repos\PDFConverter\Helper\obj\Debug\Helper.dll
+C:\Users\luffy_dai\Source\Repos\PDFConverter\Helper\obj\Debug\Helper.pdb
