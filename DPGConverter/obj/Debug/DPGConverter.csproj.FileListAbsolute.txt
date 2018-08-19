@@ -3,3 +3,8 @@ C:\Users\luffy_dai\Source\Repos\PDFConverter\DPGConverter\bin\Debug\DPGConverter
 C:\Users\luffy_dai\Source\Repos\PDFConverter\DPGConverter\obj\Debug\DPGConverter.csprojResolveAssemblyReference.cache
 C:\Users\luffy_dai\Source\Repos\PDFConverter\DPGConverter\obj\Debug\DPGConverter.dll
 C:\Users\luffy_dai\Source\Repos\PDFConverter\DPGConverter\obj\Debug\DPGConverter.pdb
+E:\myProgram\GitLocal\PDFConverter\DPGConverter\bin\Debug\DPGConverter.dll
+E:\myProgram\GitLocal\PDFConverter\DPGConverter\bin\Debug\DPGConverter.pdb
+E:\myProgram\GitLocal\PDFConverter\DPGConverter\obj\Debug\DPGConverter.csproj.CoreCompileInputs.cache
+E:\myProgram\GitLocal\PDFConverter\DPGConverter\obj\Debug\DPGConverter.dll
+E:\myProgram\GitLocal\PDFConverter\DPGConverter\obj\Debug\DPGConverter.pdb
