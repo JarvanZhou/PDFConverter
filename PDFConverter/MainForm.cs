@@ -131,8 +131,16 @@ namespace PDFConverter
         private void dgvView_DragDrop(object sender, DragEventArgs e)
         {
             string[] data = (string[])e.Data.GetData(DataFormats.FileDrop);
-            if (!Directory.Exists(data[0])) return;
-            _dirpath = data[0];
+            if (Directory.Exists(data[0]))
+            {
+                _dirpath = data[0];
+                _filepath = "";
+            }
+            else if (File.Exists(data[0]) && (data[0].EndsWith(".zip") || data[0].EndsWith(".rar")))
+            {
+                _dirpath = Path.GetDirectoryName(data[0]);
+                _filepath = data[0];
+            }
             lblTitle.Text = _dirpath.Substring(_dirpath.LastIndexOf("\\") + 1);
             Start(_dirpath);
         }
@@ -174,10 +182,19 @@ namespace PDFConverter
                 ZipStep zip = new ZipStep();
                 CheckStep check = new CheckStep();
                 zip.SavePath = dirpath;
-                string[] zipfiles = Directory.GetFiles(_dirpath, "*.zip");
-                string[] rarfiles = Directory.GetFiles(_dirpath, "*.rar");
-                zip.Files.AddRange(zipfiles);
-                zip.Files.AddRange(rarfiles);
+                if (!string.IsNullOrWhiteSpace(_filepath))
+                {
+                    zip.Files.Add(_filepath);
+                }
+                else
+                {
+                    string[] zipfiles = Directory.GetFiles(_dirpath, "*.zip");
+                    string[] rarfiles = Directory.GetFiles(_dirpath, "*.rar");
+                    if (zipfiles != null && zipfiles.Length > 0)
+                        zip.Files.AddRange(zipfiles);
+                    if (rarfiles != null && rarfiles.Length > 0)
+                        zip.Files.AddRange(rarfiles);
+                }
                 zip.Files.Sort();
                 zip.SetStep(null, check);
                 zip.DataView = dgvView;
@@ -190,7 +207,7 @@ namespace PDFConverter
 
 
         private string _dirpath;
-        private Dictionary<int,string> _dirList;
-
+        private Dictionary<int, string> _dirList;
+        private string _filepath;
     }
 }
