@@ -10,10 +10,10 @@ namespace Helper
 {
     public class ReName
     {
+        public static int fileNewNum = 0;
 
         public static Dictionary<string, string> Rename(List<string> files)
         {
-            int fileNewNum = 0;
 
             Dictionary<string, string> filedic = new Dictionary<string, string>();
             
@@ -34,7 +34,7 @@ namespace Helper
             //封面
             if (covs.Count > 2)
             {
-
+                throw new Exception("封面张数有误：" + covs.Count);
             }
             else if (covs.Count > 0)
             {

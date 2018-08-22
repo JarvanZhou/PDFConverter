@@ -85,8 +85,7 @@ namespace PDFConverter
 
             if (_dirs.Count > 0)
             {
-                progressBar1.Value = 0;
-                progressBar1.Maximum = _dirs.Count;
+                ReName.fileNewNum = 0;
                 SetBtnEnable(false);
 
                 Thread t = new Thread(runRename);
@@ -105,6 +104,8 @@ namespace PDFConverter
             dt.Columns.Add("来源");
             dt.Columns.Add("名称1");
             dt.Columns.Add("名称2");
+            Dictionary<string, string> TotalDic = new Dictionary<string, string>();
+
             foreach (var dir in _dirs)
             {
                 try
@@ -112,28 +113,37 @@ namespace PDFConverter
                     string[] file = Directory.GetFiles(dir);
                     Dictionary<string, string> dic = ReName.Rename(file.ToList());
 
-                    foreach (var kvp in dic)
-                    {
-
-                        try
-                        {
-                            File.Move(kvp.Key, Path.GetDirectoryName(kvp.Key) + "\\" + kvp.Value);
-
-                            DataRow dataRow = dt.NewRow();
-                            dataRow["来源"] = Path.GetDirectoryName(kvp.Key);
-                            dataRow["名称1"] = Path.GetFileName(kvp.Key);
-                            dataRow["名称2"] = kvp.Value;
-                            dt.Rows.Add(dataRow);
-                        }
-                        catch
-                        {
-                            errlist.Add(kvp.Key + "重命名出错");
-                        }
-                    }
+                    dic.ToList().ForEach(x => TotalDic.Add(x.Key, x.Value));
                 }
                 catch (Exception ex)
                 {
                     errlist.Add(ex.Message);
+                }
+            }
+
+            this.Invoke(new MethodInvoker(delegate
+            {
+
+                progressBar1.Value = 0;
+                progressBar1.Maximum = TotalDic.Count;
+            }));
+
+            foreach (var kvp in TotalDic)
+            {
+
+                try
+                {
+                    File.Move(kvp.Key, _outputPath + "\\" + kvp.Value);
+
+                    DataRow dataRow = dt.NewRow();
+                    dataRow["来源"] = Path.GetDirectoryName(kvp.Key);
+                    dataRow["名称1"] = Path.GetFileName(kvp.Key);
+                    dataRow["名称2"] = kvp.Value;
+                    dt.Rows.Add(dataRow);
+                }
+                catch
+                {
+                    errlist.Add(kvp.Key + "重命名出错");
                 }
                 finally
                 {
@@ -187,8 +197,8 @@ namespace PDFConverter
             _outputPath = txtPath.Text;
             if (_dirs.Count > 0)
             {
-                progressBar1.Value = 0;
-                progressBar1.Maximum = _dirs.Count;
+                //progressBar1.Value = 0;
+                //progressBar1.Maximum = _dirs.Count;
                 SetBtnEnable(false);
 
                 Thread t = new Thread(runThread);
@@ -200,24 +210,24 @@ namespace PDFConverter
         private void runThread()
         {
             List<string> errlist = new List<string>();
-            foreach (var dir in _dirs)
+            try
             {
-                try
+                PDFhandler.ConvertPDF(_outputPath, _outputPath);
+            }
+            catch (Exception ex)
+            {
+                errlist.Add(ex.Message);
+            }
+            finally
+            {
+                this.Invoke(new MethodInvoker(delegate
                 {
-                    PDFhandler.ConvertPDF(dir, _outputPath);
-                }
-                catch (Exception ex)
-                {
-                    errlist.Add(ex.Message);
-                }
-                finally
-                {
-                    this.Invoke(new MethodInvoker(delegate
+                    foreach (var dir in _dirs)
                     {
-                        progressBar1.Value++;
-                    }));
-                    _pdfChanged?.Invoke(dgvView, new PDFEventArgs(dir));
-                }
+                        _pdfChanged?.Invoke(dgvView, new PDFEventArgs(dir));
+                    }
+                }));
+
             }
 
             this.Invoke(new MethodInvoker(delegate

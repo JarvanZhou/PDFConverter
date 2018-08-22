@@ -15,12 +15,12 @@ namespace Helper
         {
 
             List<string> files = new List<string>();
-            files.AddRange(Directory.GetFiles(dir, "*.jpg").ToList());
-            files.AddRange(Directory.GetFiles(dir, "*.png").ToList());
-            files.AddRange(Directory.GetFiles(dir, "*.tif").ToList());
-            files.AddRange(Directory.GetFiles(dir, "*.tiff").ToList());
+            files.AddRange(Directory.GetFiles(dir, "*.jpg", SearchOption.AllDirectories).ToList());
+            files.AddRange(Directory.GetFiles(dir, "*.png", SearchOption.AllDirectories).ToList());
+            files.AddRange(Directory.GetFiles(dir, "*.tif", SearchOption.AllDirectories).ToList());
+            files.AddRange(Directory.GetFiles(dir, "*.tiff", SearchOption.AllDirectories).ToList());
 
-            string pdfpath = outdir + "\\" + Path.GetFileName(dir.EndsWith("\\") ? dir.Substring(0, dir.Length - 2) : dir) + ".pdf";
+            string pdfpath = outdir + "\\result_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
             Convert(files.ToList(), pdfpath);
 
         }
