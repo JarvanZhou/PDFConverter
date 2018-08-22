@@ -20,7 +20,7 @@ namespace Helper
             files.AddRange(Directory.GetFiles(dir, "*.tif", SearchOption.AllDirectories).ToList());
             files.AddRange(Directory.GetFiles(dir, "*.tiff", SearchOption.AllDirectories).ToList());
 
-            string pdfpath = outdir + "\\result_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
+            string pdfpath = outdir + "\\" + Path.GetFileName(dir.EndsWith("\\") ? dir.Substring(0, dir.Length - 2) : dir) + ".pdf";
             Convert(files.ToList(), pdfpath);
 
         }
