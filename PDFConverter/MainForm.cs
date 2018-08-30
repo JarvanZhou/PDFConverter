@@ -83,12 +83,38 @@ namespace PDFConverter
             //PDGFrom pDGFrom = new PDGFrom();
             List<string> errList = new List<string>();
 
-            foreach (var kvp in _dirList)
+            Dictionary<string, string> TotalDic = new Dictionary<string, string>();
+            Dictionary<string, List<string>> resDic = new Dictionary<string, List<string>>();
+            foreach(var kvp in _dirList)
+            {
+
+                string[] file = Directory.GetFiles(kvp.Value);
+                Dictionary<string, string> dic = ReName.Rename(file.ToList());
+                dic.ToList().ForEach(x => TotalDic.Add(x.Key, x.Value));
+
+            }
+
+            foreach(var kvp in TotalDic)
+            {
+                string outFilePath = Path.GetDirectoryName(kvp.Key) + "\\" + Path.GetFileNameWithoutExtension(kvp.Value) + Path.GetExtension(kvp.Key);
+                File.Move(kvp.Key, outFilePath);
+                string bookname = Path.GetFileName(Path.GetDirectoryName(kvp.Key));
+                if (resDic.ContainsKey(bookname))
+                {
+                    resDic[bookname].Add(outFilePath);
+                }
+                else
+                {
+                    resDic.Add(bookname, new List<string>() { outFilePath });
+                }
+            }
+
+            foreach (var kvp in resDic)
             {
 
                 try
                 {
-                    PDFhandler.ConvertPDF(kvp.Value, _dirpath);
+                    PDFhandler.ConvertPDF(Path.GetDirectoryName(kvp.Value[0]), _dirpath);
                 }
                 catch (Exception ex)
                 {
@@ -99,7 +125,7 @@ namespace PDFConverter
                     this.Invoke(new MethodInvoker(delegate
                     {
                         progressBar1.Value++;
-                        dgvView.Rows[kvp.Key].Cells[4].Value = "合成";
+                        //dgvView.Rows[kvp.Key].Cells[4].Value = "合成";
                     }));
                 }
             }
