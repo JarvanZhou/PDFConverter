@@ -40,9 +40,12 @@ namespace Helper
                 document.Open();
                 foreach (var file in files)
                 {
-                    Image bitmap = Image.GetInstance(file);
-                    bitmap.ScalePercent((float)55000 / bitmap.Width);
-                    document.Add(bitmap);
+                    if (File.Exists(file))
+                    {
+                        Image bitmap = Image.GetInstance(file);
+                        bitmap.ScalePercent((float)55000 / bitmap.Width);
+                        document.Add(bitmap);
+                    }
                 }
                 document.Close();
             }

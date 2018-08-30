@@ -210,24 +210,61 @@ namespace PDFConverter
         private void runThread()
         {
             List<string> errlist = new List<string>();
-            try
-            {
-                PDFhandler.ConvertPDF(_outputPath, _outputPath);
-            }
-            catch (Exception ex)
-            {
-                errlist.Add(ex.Message);
-            }
-            finally
-            {
-                this.Invoke(new MethodInvoker(delegate
-                {
-                    foreach (var dir in _dirs)
-                    {
-                        _pdfChanged?.Invoke(dgvView, new PDFEventArgs(dir));
-                    }
-                }));
+            Dictionary<string, List<string>> resDic = new Dictionary<string, List<string>>();
 
+            var excels = Directory.GetFiles(_outputPath, "重命名*.xls").ToList();
+            excels.Sort(SortClass.StrCmpLogicalW);
+
+            DataTable dt = ExcelHandler.ReadExcel(excels[excels.Count - 1]);
+
+            if (dt != null)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    string bookname = Path.GetFileName(dt.Rows[i]["来源"].ToString());
+
+                    if (resDic.ContainsKey(bookname))
+                    {
+                        resDic[bookname].Add(_outputPath + "\\" + Path.GetFileNameWithoutExtension(dt.Rows[i]["名称2"].ToString()) + ".jpg");
+                        resDic[bookname].Add(_outputPath + "\\" + Path.GetFileNameWithoutExtension(dt.Rows[i]["名称2"].ToString()) + ".tif");
+                    }
+                    else
+                    {
+                        resDic.Add(bookname, new List<string>());
+                        resDic[bookname].Add(_outputPath + "\\" + Path.GetFileNameWithoutExtension(dt.Rows[i]["名称2"].ToString()) + ".jpg");
+                        resDic[bookname].Add(_outputPath + "\\" + Path.GetFileNameWithoutExtension(dt.Rows[i]["名称2"].ToString()) + ".tif");
+
+                    }
+                }
+
+                foreach (var kvp in resDic)
+                {
+                    try
+                    {
+
+                        PDFhandler.Convert(kvp.Value, _outputPath + "\\" + kvp.Key + ".pdf");
+                    }
+                    catch (Exception ex)
+                    {
+
+                        errlist.Add(ex.Message);
+                    }
+                    finally
+                    {
+                        this.Invoke(new MethodInvoker(delegate
+                        {
+                            foreach (var dir in _dirs)
+                            {
+                                _pdfChanged?.Invoke(dgvView, new PDFEventArgs(dir));
+                            }
+                        }));
+
+                    }
+                }
+            }
+            else
+            {
+                errlist.Add("读取" + excels[excels.Count - 1] + "文件失败");
             }
 
             this.Invoke(new MethodInvoker(delegate
